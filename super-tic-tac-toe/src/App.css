@@ -24,5 +24,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: max-content; */
+  min-height: 200px;
+  max-height: 100%;
 }
