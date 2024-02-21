@@ -11,23 +11,12 @@ const App: React.FC = () => {
   const handleClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     const clickedBox = event.currentTarget as HTMLDivElement;
 
-    // updateArrays(clickedBox);
-    // checkWinner();
-
     if (clickedBox.textContent === "X" || clickedBox.textContent === "O") {
       return;
     }
-    if (winner) {
-      return;
-    }
-    // let boxText = clickedBox.textContent;
-    // const index: number = parseInt(clickedBox.dataset.id || "", 10);
-    // let boardText = boardArray[index - 1].text;
-    // boardText = clickedBox.textContent;
 
     const allBoxes = document.querySelectorAll(".box");
-    // let xArray = Array.from(allBoxes).filter((box) => box.textContent === "X");
-    // let oArray = Array.from(allBoxes).filter((box) => box.textContent === "O");
+
     let xCount: any = xArray.length;
     let oCount: any = oArray.length;
 
@@ -39,25 +28,9 @@ const App: React.FC = () => {
       clickedBox.textContent = "O";
       setOArray((prev) => [...prev, clickedBox]);
     }
-    // if (oArray.length <= xArray.length) {
-    //   clickedBox.textContent = "O";
-    // } else clickedBox.textContent = "X";
-
-    // for (let i = 0; i < boardArray.length; i++) {
-    //   if (boardText === "X") {
-    //     xArray.push(boardText);
-    //   } else if (boardText === "O") {
-    //     oArray.push(boardText);
-    //   }
-
-    // console.log(xCount, oCount);
-    // console.log(oCount);
-    // console.log(["yam"]);
 
     checkWinner();
-    console.log(updatedBoardArray);
-
-    // setWinner(null);
+    console.log("handleClick" + updatedBoardArray);
   };
 
   function checkWinner() {
@@ -88,8 +61,8 @@ const App: React.FC = () => {
         xArray.some((box) => box.classList.contains("bottom-left")))
     ) {
       console.log("X wins");
-      endGame();
       setWinner("X");
+      endGame();
     } else if (
       (oArray.some((box) => box.classList.contains("top-left")) &&
         oArray.some((box) => box.classList.contains("top-mid")) &&
@@ -117,23 +90,24 @@ const App: React.FC = () => {
         oArray.some((box) => box.classList.contains("bottom-left")))
     ) {
       console.log("O Wins");
-      endGame();
       setWinner("O");
+      endGame();
     }
   }
+
   function endGame() {
-    const endGameArray = updatedBoardArray.map((item) => {
-      return { ...item, text: "" };
+    // const endGameArray = updatedBoardArray.map((item) => {
+    //   return { ...item, text: "." };
+    //   // updatedBoardArray.map((item) => (item.textContent = ""));
+    // });
+    setUpdatedBoardArray(boardArray);
+    setXArray([]);
+    setOArray([]);
+    // setWinner(null);
 
-      // updatedBoardArray.map((item) => (item.textContent = ""));
-    });
-
-    setUpdatedBoardArray(endGameArray);
-    // setXArray([]);
-    // setOArray([]);
     console.log("Game ended");
     console.log(updatedBoardArray);
-    return true;
+    // return true;
   }
 
   useEffect(() => {
@@ -149,13 +123,18 @@ const App: React.FC = () => {
           oArray.some((box) => box.classList.contains(item.className))
         ) {
           return { ...item, text: "O" };
-        } else {
-          return { ...item, text: "" };
-        }
+        } else return { ...item };
       });
     });
     checkWinner();
+
+    console.log(boardArray);
+    console.log(updatedBoardArray);
   }, [xArray, oArray]);
+
+  useEffect(() => {
+    console.log(updatedBoardArray);
+  }, [updatedBoardArray]);
 
   return (
     <div className="App">
@@ -167,7 +146,8 @@ const App: React.FC = () => {
             onClick={handleClick}
             data-id={item.id}
           >
-            {!winner || item.text}
+            {/* {!winner || item.text} */}
+            {item.text}
           </div>
         ))}
       </div>
